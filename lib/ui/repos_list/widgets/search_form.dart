@@ -14,7 +14,7 @@ class SearchForm extends StatelessWidget {
       TextField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          labelText: 'GitHub user name',
+          labelText: 'Search query',
         ),
         controller: _searchController,
       ),

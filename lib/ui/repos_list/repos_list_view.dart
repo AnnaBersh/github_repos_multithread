@@ -26,15 +26,30 @@ class ReposListView extends StatelessWidget {
               builder: (context, state) {
                 switch (state.runtimeType) {
                   case ReposLoadingState:
-                    return const CircularProgressIndicator();
+                    return _buildLoadingState(searchQuery: state.searchQuery);
                   case ReposSuccessState:
-                    return ListViewWithSearch(repos: state.repos, searchQuery: state.searchQuery);
+                    return ListViewWithSearch(
+                      repos: state.repos,
+                      searchQuery: state.searchQuery,
+                      hasMoreData: state.totalCount > state.repos.length,
+                    );
                   default:
                     return SearchForm();
                 }
               },
             ),
           )),
+    );
+  }
+
+  Widget _buildLoadingState({required String searchQuery}) {
+    return Column(
+      children: [
+        SearchForm(
+          searchQuery: searchQuery,
+        ),
+        const CircularProgressIndicator()
+      ],
     );
   }
 }
