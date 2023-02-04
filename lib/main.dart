@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:github_repos_multithread/ui/repos_list/repos_list_screen.dart';
+import 'package:hive_flutter/adapters.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
   runApp(const MyApp());
 }
 
