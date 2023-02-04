@@ -16,24 +16,27 @@ class ReposCubit extends Cubit<ReposState> {
 
   ReposCubit() : super(ReposInitialState());
 
-  void search(String searchQuery) {
+  Future<void> search(String searchQuery) async {
     if (!isLoading) {
       isLoading = true;
-      log("New search. Invalidating results");
-      emit(ReposInitialState(searchQuery: searchQuery));
+
+      if (searchQuery != state.searchQuery) {
+        log("New search. Invalidating results");
+        emit(ReposLoadingState(searchQuery: searchQuery));
+      }
       log("----------------------");
       log("Loading iteration started");
 
-      final int currentPage = state.pageNumber;
+      await _loadData(searchQuery: state.searchQuery, currentPage: state.pageNumber);
 
-      emit(ReposLoadingState(searchQuery: searchQuery, pageNumber: currentPage + 2, repos: state.repos));
-
-      _loadData(searchQuery: searchQuery, currentPage: currentPage).then((value) {
-        isLoading = false;
-        log("Loading iteration done");
-        log("----------------------");
-      });
+      isLoading = false;
+      log("Loading iteration done");
+      log("----------------------");
     }
+  }
+
+  Future<void> loadMore() async {
+    return search(state.searchQuery);
   }
 
   Future<void> _loadData({required String searchQuery, required int currentPage}) {
@@ -44,25 +47,6 @@ class ReposCubit extends Cubit<ReposState> {
         .then(_handleSearchResultFromThread));
     futureGroup.close();
     return futureGroup.future;
-  }
-
-  Future<void> loadMore() async {
-    if (!isLoading) {
-      isLoading = true;
-      log("----------------------");
-      log("Loading iteration started");
-
-      await _loadData(searchQuery: state.searchQuery, currentPage: state.pageNumber);
-      //TODO Need to update page number in a better way
-      emit(ReposSuccessState(
-          searchQuery: state.searchQuery,
-          repos: state.repos,
-          pageNumber: state.pageNumber + 2,
-          totalCount: state.totalCount));
-      isLoading = false;
-      log("Loading iteration done");
-      log("----------------------");
-    }
   }
 
   void _handleSearchResultFromThread(Either<String, SearchResult> result) {
@@ -81,7 +65,7 @@ class ReposCubit extends Cubit<ReposState> {
       emit(ReposSuccessState(
           searchQuery: state.searchQuery,
           repos: newRepos,
-          pageNumber: state.pageNumber,
+          pageNumber: state.pageNumber + 1,
           totalCount: result.totalCount));
 
       log("New state page: ${state.pageNumber}");

@@ -2,7 +2,8 @@ import 'package:github_repos_multithread/domain_model/github_repo.dart';
 
 abstract class ReposState {
   final String searchQuery;
-  final int pageNumber;
+  final int pageNumber; // as we always increase pageNumber before making request
+                        // and min page for github is 1 it has to start from 0 here
   final int totalCount;
   final List<GitHubRepo> repos;
 
