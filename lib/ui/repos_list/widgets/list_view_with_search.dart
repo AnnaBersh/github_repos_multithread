@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:github_repos_multithread/domain_model/github_repo.dart';
+import 'package:github_repos_multithread/model/github_repo.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/repos_cubit.dart';
 import 'package:github_repos_multithread/ui/repos_list/widgets/search_form.dart';
 import 'package:loadmore/loadmore.dart';
@@ -42,9 +42,13 @@ class ListViewWithSearch extends StatelessWidget {
         child: ListView.builder(
             itemCount: repos.length,
             itemBuilder: (context, index) {
+              GitHubRepo repo = repos[index];
               return ListTile(
-                title: Text(repos[index].name),
-                subtitle: Text(repos[index].htmlUrl),
+                title: Text(repo.name),
+                subtitle: Text(repo.htmlUrl),
+                onTap: () {
+                  context.read<ReposCubit>().toggleFavorites(repo);
+                },
               );
             }),
       ),

@@ -4,15 +4,18 @@ import 'package:async/async.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:github_repos_multithread/data/github_api.dart';
-import 'package:github_repos_multithread/data/model/repos_list_response.dart';
-import 'package:github_repos_multithread/domain_model/github_repo.dart';
+import 'package:github_repos_multithread/data/repos_repository.dart';
+import 'package:github_repos_multithread/model/github_repo.dart';
+import 'package:github_repos_multithread/model/repos_list_response.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/model/search_command.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/model/search_result.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/repos_state.dart';
 
 class ReposCubit extends Cubit<ReposState> {
   bool isLoading = false;
+  final ReposRepository _reposRepository = GetIt.instance.get<ReposRepository>();
 
   ReposCubit() : super(ReposInitialState());
 
@@ -70,6 +73,11 @@ class ReposCubit extends Cubit<ReposState> {
 
       log("New state page: ${state.pageNumber}");
     });
+  }
+
+  void toggleFavorites(GitHubRepo repo) {
+    _reposRepository.toggleFavorites(repo);
+    //TODO change state
   }
 }
 

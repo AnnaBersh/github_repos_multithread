@@ -39,7 +39,8 @@ dependencies:
   loadmore: ^2.0.1
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-
+  get_it: ^7.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

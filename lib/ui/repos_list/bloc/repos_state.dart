@@ -1,4 +1,6 @@
-import 'package:github_repos_multithread/domain_model/github_repo.dart';
+
+
+import 'package:github_repos_multithread/model/github_repo.dart';
 
 abstract class ReposState {
   final String searchQuery;

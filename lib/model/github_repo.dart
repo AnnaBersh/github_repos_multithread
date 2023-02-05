@@ -1,20 +1,26 @@
-import 'github_repo_owner.dart';
+import 'package:hive/hive.dart';
 
+import 'github_repo_owner.dart';
+part 'github_repo.g.dart';
+
+@HiveType(typeId: 0)
 class GitHubRepo {
-  int id;
-  String nodeId;
-  String name;
-  String fullName;
-  bool private;
-  Owner? owner;
-  String htmlUrl;
-  String? description;
+  @HiveField(0)
+  final int id;
+  @HiveField(1)
+  final String name;
+  @HiveField(2)
+  final bool private;
+  @HiveField(3)
+  final Owner? owner;
+  @HiveField(4)
+  final String htmlUrl;
+  @HiveField(5)
+  final String? description;
 
   GitHubRepo(
       {required this.id,
-      required this.nodeId,
       required this.name,
-      required this.fullName,
       required this.private,
       this.owner,
       required this.htmlUrl,
@@ -22,9 +28,7 @@ class GitHubRepo {
 
   GitHubRepo.fromJson(Map<String, dynamic> json)
       : id = json['id'],
-        nodeId = json['node_id'],
         name = json['name'],
-        fullName = json['full_name'],
         private = json['private'],
         owner = json['owner'] != null ? Owner.fromJson(json['owner']) : null,
         htmlUrl = json['html_url'],

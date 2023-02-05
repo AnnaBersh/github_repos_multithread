@@ -1,10 +1,8 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:github_repos_multithread/domain_model/github_repo.dart';
+import 'package:github_repos_multithread/model/repos_list_response.dart';
 import 'package:http/http.dart' as http;
-
-import 'model/repos_list_response.dart';
 
 const int pageSize = 15;
 
@@ -15,13 +13,13 @@ Future<ReposListResponse> getReposList({String searchQuery = "test", int page = 
   if (response.statusCode == 200) {
     Map<String, dynamic> decodedResponse = jsonDecode(response.body);
     List<dynamic> reposJson = decodedResponse['items'] as List<dynamic>;
-    result = ReposListResponse(true,
-        reposList: reposJson.map((dynamic json) => GitHubRepo.fromJson(json)).toList(),
+    result = ReposListResponse(isSuccess: true,
+        reposListJson: reposJson,
         totalCount: decodedResponse['total_count'] ?? 0);
   } else {
     String errorText = jsonDecode(response.body)['message'] ?? 'Error message not found';
     log("API error: $errorText");
-    result = ReposListResponse(false, error: errorText);
+    result = ReposListResponse(isSuccess: false, error: errorText);
   }
   return result;
 }
