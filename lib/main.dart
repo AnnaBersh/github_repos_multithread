@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:github_repos_multithread/data/github_api.dart';
 import 'package:github_repos_multithread/data/repos_repository.dart';
 import 'package:github_repos_multithread/model/github_repo_owner.dart';
 import 'package:github_repos_multithread/ui/repos_list/repos_list_screen.dart';
@@ -20,6 +21,7 @@ Future<void> initDb() async {
 }
 
 void initDi() {
+  GetIt.instance.registerSingleton<GithubApi>(GithubApi());
   GetIt.instance.registerSingleton<ReposRepository>(ReposRepository(), signalsReady: true);
 }
 

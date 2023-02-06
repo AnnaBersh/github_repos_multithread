@@ -5,7 +5,6 @@ import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:github_repos_multithread/data/github_api.dart';
 import 'package:github_repos_multithread/data/repos_repository.dart';
 import 'package:github_repos_multithread/model/api/repos_list_response.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
@@ -40,9 +39,11 @@ class ReposCubit extends Cubit<ReposState> {
 
   Future<void> _loadData({required String searchQuery, required int currentPage}) {
     FutureGroup futureGroup = FutureGroup();
-    futureGroup.add(compute(getReposPage, SearchCommand(searchQuery: searchQuery, pageNumber: currentPage + 1))
+    futureGroup.add(compute(getReposPage,
+            SearchCommand(searchQuery: searchQuery, reposRepository: _reposRepository, pageNumber: currentPage + 1))
         .then(_handleSearchResultFromThread));
-    futureGroup.add(compute(getReposPage, SearchCommand(searchQuery: searchQuery, pageNumber: currentPage + 2))
+    futureGroup.add(compute(getReposPage,
+            SearchCommand(searchQuery: searchQuery, reposRepository: _reposRepository, pageNumber: currentPage + 2))
         .then(_handleSearchResultFromThread));
     futureGroup.close();
     return futureGroup.future;
@@ -102,8 +103,8 @@ class ReposCubit extends Cubit<ReposState> {
 
 /// This should be called from separate isolate
 Future<Either<String, SearchResult>> getReposPage(SearchCommand searchCommand) async {
-  ReposListResponse response =
-      await getReposList(searchQuery: searchCommand.searchQuery, page: searchCommand.pageNumber);
+  ReposListResponse response = await searchCommand.reposRepository
+      .getReposList(searchQuery: searchCommand.searchQuery, page: searchCommand.pageNumber);
   if (response.isSuccess) {
     return Right(SearchResult(
         repos: response.reposList ?? [], pageNumber: searchCommand.pageNumber, totalCount: response.totalCount));
