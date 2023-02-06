@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_repos_multithread/constants/styles.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/repos_cubit.dart';
 
 class SearchForm extends StatelessWidget {
@@ -19,7 +20,7 @@ class SearchForm extends StatelessWidget {
         controller: _searchController,
       ),
       TextButton(
-          child: const Text("Search"),
+          child: const Text("Search", style: Styles.s14MainGreenW700,),
           onPressed: () {
             context.read<ReposCubit>().search(_searchController.text);
           }),
@@ -27,7 +28,7 @@ class SearchForm extends StatelessWidget {
           onPressed: () {
             context.read<ReposCubit>().goToFavorites();
           },
-          child: const Text('Go to favorites')),
+          child: const Text('Go to favorites', style: Styles.s14MainGreenW700,)),
     ]);
   }
 }

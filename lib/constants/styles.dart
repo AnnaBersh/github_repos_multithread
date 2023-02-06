@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'palette.dart';
 
-const fontFamily = 'Indie Flower';
+const fontFamily = 'Montserrat';
 
 class Styles {
   Styles._();
@@ -12,5 +12,12 @@ class Styles {
     color: Palette.black,
     fontWeight: FontWeight.w700,
     fontSize: 28.0,
+  );
+
+  //MainGreen
+  static const s14MainGreenW700 = TextStyle(
+    color: Palette.mainGreen,
+    fontWeight: FontWeight.w700,
+    fontSize: 14.0,
   );
 }

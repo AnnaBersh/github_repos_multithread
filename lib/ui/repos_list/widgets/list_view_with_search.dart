@@ -63,7 +63,7 @@ class ListViewWithSearch extends StatelessWidget {
                           )
                         : const Icon(
                             Icons.favorite_outline,
-                            color: Palette.greenBlue,
+                            color: Palette.mainGreen,
                           )),
                 onTap: () {
                   context.read<ReposCubit>().toggleFavorites(repo);

@@ -69,11 +69,11 @@ flutter:
       fonts:
         - asset: assets/font/Indie_Flower/IndieFlower-Regular.ttf
 
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+    - family: Montserrat
+      fonts:
+        - asset: assets/font/Monserrat/static/Montserrat-Regular.ttf
+        - asset: assets/font/Monserrat/static/Montserrat-Italic.ttf
+          weight: 400
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
