@@ -30,6 +30,7 @@ class ReposListView extends StatelessWidget {
                   case ReposSuccessState:
                     return ListViewWithSearch(
                       repos: state.repos,
+                      favoriteRepos: state.favoriteRepos,
                       searchQuery: state.searchQuery,
                       hasMoreData: state.totalCount > state.repos.length,
                     );

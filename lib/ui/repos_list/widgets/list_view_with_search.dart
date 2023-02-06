@@ -9,10 +9,16 @@ import 'package:loadmore/loadmore.dart';
 
 class ListViewWithSearch extends StatelessWidget {
   final List<GitHubRepo> repos;
+  final List<GitHubRepo> favoriteRepos;
   final String searchQuery;
   final bool hasMoreData;
 
-  const ListViewWithSearch({super.key, required this.repos, required this.searchQuery, required this.hasMoreData});
+  const ListViewWithSearch(
+      {super.key,
+      required this.repos,
+      required this.favoriteRepos,
+      required this.searchQuery,
+      required this.hasMoreData});
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +52,10 @@ class ListViewWithSearch extends StatelessWidget {
               return ListTile(
                 title: Text(repo.name),
                 subtitle: Text(repo.htmlUrl),
+                trailing: IconButton(
+                    onPressed: null,
+                    icon:
+                        favoriteRepos.contains(repo) ? const Icon(Icons.favorite) : const Icon(Icons.favorite_outline)),
                 onTap: () {
                   context.read<ReposCubit>().toggleFavorites(repo);
                 },

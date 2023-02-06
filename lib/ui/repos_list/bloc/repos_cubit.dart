@@ -55,7 +55,8 @@ class ReposCubit extends Cubit<ReposState> {
   void _handleSearchResultFromThread(Either<String, SearchResult> result) {
     log("Handling response");
     result.fold((String error) {
-      emit(ReposErrorState(errorMessage: error));
+      emit(ReposErrorState(
+          errorMessage: error, searchQuery: state.searchQuery, repos: state.repos, favoriteRepos: state.favoriteRepos));
     }, (SearchResult result) {
       log("Handling success for page ${result.pageNumber}");
 
@@ -69,21 +70,28 @@ class ReposCubit extends Cubit<ReposState> {
           searchQuery: state.searchQuery,
           repos: newRepos,
           pageNumber: state.pageNumber + 1,
-          totalCount: result.totalCount));
+          totalCount: result.totalCount,
+          favoriteRepos: _reposRepository.getFavorites()));
 
-      log("New state page: ${state.pageNumber}");
+      log("New state page: ${state.pageNumber}"
+      );
     });
   }
 
   void toggleFavorites(GitHubRepo repo) {
     _reposRepository.toggleFavorites(repo);
-    //TODO change state
+    emit(ReposSuccessState(
+        searchQuery: state.searchQuery,
+        repos: state.repos,
+        pageNumber: state.pageNumber + 1,
+        totalCount: state.totalCount,
+        favoriteRepos: _reposRepository.getFavorites()));
   }
 }
 
 Future<Either<String, SearchResult>> getReposListThread(SearchCommand searchCommand) async {
   ReposListResponse response =
-      await getReposList(searchQuery: searchCommand.searchQuery, page: searchCommand.pageNumber);
+  await getReposList(searchQuery: searchCommand.searchQuery, page: searchCommand.pageNumber);
   if (response.isSuccess) {
     return Right(SearchResult(
         repos: response.reposList ?? [], pageNumber: searchCommand.pageNumber, totalCount: response.totalCount));
