@@ -1,6 +1,7 @@
 import 'package:hive/hive.dart';
 
 import 'github_repo_owner.dart';
+
 part 'github_repo.g.dart';
 
 @HiveType(typeId: 0)
@@ -33,4 +34,16 @@ class GitHubRepo {
         owner = json['owner'] != null ? Owner.fromJson(json['owner']) : null,
         htmlUrl = json['html_url'],
         description = json['description'];
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is GitHubRepo &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          name == other.name &&
+          owner == other.owner;
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ owner.hashCode;
 }

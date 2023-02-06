@@ -1,9 +1,10 @@
 import 'package:github_repos_multithread/model/github_repo.dart';
 
 abstract class ReposState {
+  // as we always increase pageNumber before making request
+  // and min page for github is 1 it has to start from 0 here. See constructor
+  final int pageNumber;
   final String searchQuery;
-  final int pageNumber; // as we always increase pageNumber before making request
-  // and min page for github is 1 it has to start from 0 here
   final int totalCount;
   final List<GitHubRepo> repos;
   final List<GitHubRepo> favoriteRepos;
@@ -17,26 +18,20 @@ abstract class ReposState {
 }
 
 class ReposInitialState extends ReposState {
-  ReposInitialState({String searchQuery = ''}) : super(searchQuery: searchQuery);
+  ReposInitialState({super.searchQuery});
 }
 
 class ReposSuccessState extends ReposState {
   ReposSuccessState(
-      {required String searchQuery,
-      required List<GitHubRepo> repos,
-      required List<GitHubRepo> favoriteRepos,
-      required int pageNumber,
-      required int totalCount})
-      : super(
-            searchQuery: searchQuery,
-            pageNumber: pageNumber,
-            repos: repos,
-            favoriteRepos: favoriteRepos,
-            totalCount: totalCount);
+      {required super.searchQuery,
+      required super.repos,
+      required super.favoriteRepos,
+      required super.pageNumber,
+      required super.totalCount});
 }
 
 class ReposLoadingState extends ReposState {
-  ReposLoadingState({required String searchQuery}) : super(searchQuery: searchQuery);
+  ReposLoadingState({super.searchQuery});
 }
 
 class ReposErrorState extends ReposState {
@@ -44,15 +39,13 @@ class ReposErrorState extends ReposState {
 
   ReposErrorState(
       {required this.errorMessage,
-      String searchQuery = '',
-      List<GitHubRepo> repos = const [],
-      List<GitHubRepo> favoriteRepos = const [],
-      int pageNumber = 0,
-      int totalCount = 0})
-      : super(
-            searchQuery: searchQuery,
-            pageNumber: pageNumber,
-            totalCount: totalCount,
-            repos: repos,
-            favoriteRepos: favoriteRepos);
+      super.searchQuery,
+      super.repos,
+      super.favoriteRepos,
+      super.pageNumber,
+      super.totalCount});
+}
+
+class GoToFavoritesState extends ReposState {
+  GoToFavoritesState({super.searchQuery, super.repos, super.favoriteRepos, super.pageNumber, super.totalCount});
 }

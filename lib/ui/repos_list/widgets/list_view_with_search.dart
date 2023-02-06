@@ -26,7 +26,7 @@ class ListViewWithSearch extends StatelessWidget {
     List<Widget> widgets = [
       SearchForm(
         searchQuery: searchQuery,
-      )
+      ),
     ];
     widgets.add(Expanded(
       child: LoadMore(
@@ -46,6 +46,7 @@ class ListViewWithSearch extends StatelessWidget {
           }
         },
         child: ListView.builder(
+            key: const PageStorageKey('repos_page'),
             itemCount: repos.length,
             itemBuilder: (context, index) {
               GitHubRepo repo = repos[index];

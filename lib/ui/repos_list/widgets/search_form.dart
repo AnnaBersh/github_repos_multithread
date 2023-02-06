@@ -22,7 +22,12 @@ class SearchForm extends StatelessWidget {
           child: const Text("Search"),
           onPressed: () {
             context.read<ReposCubit>().search(_searchController.text);
-          })
+          }),
+      TextButton(
+          onPressed: () {
+            context.read<ReposCubit>().goToFavorites();
+          },
+          child: const Text('Go to favorites')),
     ]);
   }
 }

@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+
 part 'github_repo_owner.g.dart';
 
 @HiveType(typeId: 1)
@@ -28,4 +29,12 @@ class Owner {
         avatarUrl = json['avatar_url'],
         gravatarId = json['gravatar_id'],
         url = json['url'];
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Owner && runtimeType == other.runtimeType && id == other.id && login == other.login;
+
+  @override
+  int get hashCode => id.hashCode ^ login.hashCode;
 }

@@ -13,9 +13,8 @@ Future<ReposListResponse> getReposList({String searchQuery = "test", int page = 
   if (response.statusCode == 200) {
     Map<String, dynamic> decodedResponse = jsonDecode(response.body);
     List<dynamic> reposJson = decodedResponse['items'] as List<dynamic>;
-    result = ReposListResponse(isSuccess: true,
-        reposListJson: reposJson,
-        totalCount: decodedResponse['total_count'] ?? 0);
+    result =
+        ReposListResponse(isSuccess: true, reposListJson: reposJson, totalCount: decodedResponse['total_count'] ?? 0);
   } else {
     String errorText = jsonDecode(response.body)['message'] ?? 'Error message not found';
     log("API error: $errorText");
