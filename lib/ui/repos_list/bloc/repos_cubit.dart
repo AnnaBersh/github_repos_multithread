@@ -14,14 +14,14 @@ import 'package:github_repos_multithread/ui/repos_list/bloc/model/search_result.
 import 'package:github_repos_multithread/ui/repos_list/bloc/repos_state.dart';
 
 class ReposCubit extends Cubit<ReposState> {
-  bool isLoading = false;
+  bool _isLoading = false;
   final ReposRepository _reposRepository = GetIt.instance.get<ReposRepository>();
 
   ReposCubit() : super(ReposInitialState());
 
   Future<void> search(String searchQuery) async {
-    if (!isLoading) {
-      isLoading = true;
+    if (!_isLoading) {
+      _isLoading = true;
 
       if (searchQuery != state.searchQuery) {
         log("New search. Invalidating results");
@@ -32,7 +32,7 @@ class ReposCubit extends Cubit<ReposState> {
 
       await _loadData(searchQuery: state.searchQuery, currentPage: state.pageNumber);
 
-      isLoading = false;
+      _isLoading = false;
       log("Loading iteration done");
       log("----------------------");
     }
