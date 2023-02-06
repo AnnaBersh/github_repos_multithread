@@ -6,6 +6,7 @@ import 'package:github_repos_multithread/model/github_repo_owner.dart';
 import 'package:github_repos_multithread/ui/repos_list/repos_list_screen.dart';
 import 'package:hive_flutter/adapters.dart';
 
+import 'constants/theme.dart';
 import 'model/github_repo.dart';
 
 void main() async {
@@ -31,10 +32,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      title: 'Genesis test app',
+      debugShowCheckedModeBanner: false,
+      theme: buildTheme(),
       home: const ReposListScreen(),
     );
   }

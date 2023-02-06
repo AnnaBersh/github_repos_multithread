@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_repos_multithread/constants/palette.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
 import 'package:github_repos_multithread/ui/repos_list/bloc/repos_cubit.dart';
 import 'package:github_repos_multithread/ui/repos_list/widgets/search_form.dart';
@@ -55,8 +56,15 @@ class ListViewWithSearch extends StatelessWidget {
                 subtitle: Text(repo.htmlUrl),
                 trailing: IconButton(
                     onPressed: null,
-                    icon:
-                        favoriteRepos.contains(repo) ? const Icon(Icons.favorite) : const Icon(Icons.favorite_outline)),
+                    icon: favoriteRepos.contains(repo)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Palette.accentPink15,
+                          )
+                        : const Icon(
+                            Icons.favorite_outline,
+                            color: Palette.greenBlue,
+                          )),
                 onTap: () {
                   context.read<ReposCubit>().toggleFavorites(repo);
                 },

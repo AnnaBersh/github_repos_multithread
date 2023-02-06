@@ -17,7 +17,7 @@ class FavoritesList extends StatelessWidget {
           return ListTile(
             title: Text(repo.name),
             subtitle: Text(repo.htmlUrl),
-            trailing: const IconButton(onPressed: null, icon: Icon(Icons.favorite)),
+            trailing: const IconButton(onPressed: null, icon: Icon(Icons.favorite, color: Colors.lightBlue,)),
             onTap: () {
               context.read<FavoritesCubit>().removeFromFavorites(repo);
             },
