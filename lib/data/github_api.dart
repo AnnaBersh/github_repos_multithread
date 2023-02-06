@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:github_repos_multithread/model/repos_list_response.dart';
+import 'package:github_repos_multithread/model/api/repos_list_response.dart';
 import 'package:http/http.dart' as http;
 
 const int pageSize = 15;
