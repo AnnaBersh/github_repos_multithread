@@ -65,15 +65,18 @@ flutter:
   # assets:
 
   fonts:
-    - family: Indie Flower
-      fonts:
-        - asset: assets/font/Indie_Flower/IndieFlower-Regular.ttf
 
     - family: Montserrat
       fonts:
-        - asset: assets/font/Monserrat/static/Montserrat-Regular.ttf
-        - asset: assets/font/Monserrat/static/Montserrat-Italic.ttf
+        - asset: assets/font/Montserrat/static/Montserrat-Regular.ttf
+        - asset: assets/font/Montserrat/static/Montserrat-Italic.ttf
           weight: 400
+
+    - family: Montserrat Alternates
+      fonts:
+        - asset: assets/font/Montserrat_Alternates/MontserratAlternates-Regular.ttf
+        - asset: assets/font/Montserrat_Alternates/MontserratAlternates-Italic.ttf
+
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

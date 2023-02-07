@@ -14,14 +14,22 @@ import 'favorites_bloc_test.mocks.dart';
 void main() {
   MockReposRepository mockReposRepository = MockReposRepository();
   GitHubRepo repo = GitHubRepo(id: 1, name: 'name', private: false, htmlUrl: 'htmlUrl');
-  group('CounterCubit', () {
+  group('FavoritesCubit', () {
     setUpAll(() {
       GetIt.instance.registerSingleton<ReposRepository>(mockReposRepository);
     });
 
     blocTest<FavoritesCubit, FavoritesState>('emits [] when nothing is called',
-        build: () => FavoritesCubit(), expect: () => [] //[isA<LoadingFavoritesState>()],
+        build: () => FavoritesCubit(), expect: () => [],
         );
+
+    blocTest<FavoritesCubit, FavoritesState>(
+      'LoadingFavoritesState is an initial state',
+      build: () => FavoritesCubit(),
+      verify: (FavoritesCubit cubit) {
+        expect(cubit.state, isA<LoadingFavoritesState>());
+      },
+    );
 
     blocTest<FavoritesCubit, FavoritesState>(
         'emits [LoadingFavoritesState, LoadedFavoritesState] when loadData is called',
@@ -35,8 +43,7 @@ void main() {
           verify(mockReposRepository.getFavorites());
         });
 
-    blocTest<FavoritesCubit, FavoritesState>(
-        'emits [LoadedFavoritesState] when removeFromFavorites is called',
+    blocTest<FavoritesCubit, FavoritesState>('emits [LoadedFavoritesState] when removeFromFavorites is called',
         setUp: () {
           when(mockReposRepository.getFavorites()).thenReturn([repo]);
         },
