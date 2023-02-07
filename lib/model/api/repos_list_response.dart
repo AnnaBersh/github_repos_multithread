@@ -1,7 +1,7 @@
 import 'package:github_repos_multithread/model/api/base_network_response.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
 
-class ReposListResponse extends BaseNetworkResponse{
+class ReposListResponse extends BaseNetworkResponse {
   final List<GitHubRepo>? reposList;
   final int totalCount;
 

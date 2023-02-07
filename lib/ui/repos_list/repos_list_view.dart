@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:github_repos_multithread/constants/palette.dart';
+import 'package:github_repos_multithread/constants/strings.dart';
+import 'package:github_repos_multithread/constants/styles.dart';
 import 'package:github_repos_multithread/ui/favorites/favorites_list_screen.dart';
 import 'package:github_repos_multithread/ui/repos_list/widgets/list_view_with_search.dart';
 import 'package:github_repos_multithread/ui/repos_list/widgets/search_form.dart';
@@ -14,7 +17,11 @@ class ReposListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('GitHub repos list')),
+      appBar: AppBar(
+          title: const Text(
+        Strings.gitHubReposList,
+        style: Styles.s18MainGreenW800,
+      )),
       body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Center(
@@ -23,7 +30,12 @@ class ReposListView extends StatelessWidget {
                 switch (state.runtimeType) {
                   case ReposErrorState:
                     Fluttertoast.showToast(
-                        msg: (state as ReposErrorState).errorMessage, toastLength: Toast.LENGTH_LONG, fontSize: 16.0);
+                      msg: (state as ReposErrorState).errorMessage,
+                      toastLength: Toast.LENGTH_LONG,
+                      fontSize: 16.0,
+                      backgroundColor: Palette.white,
+                      textColor: Palette.mainGreen,
+                    );
                     break;
                   case GoToFavoritesState:
                     Navigator.of(context)
@@ -58,7 +70,9 @@ class ReposListView extends StatelessWidget {
         SearchForm(
           searchQuery: searchQuery,
         ),
-        const CircularProgressIndicator()
+        const CircularProgressIndicator(
+          backgroundColor: Palette.accentPink15,
+        )
       ],
     );
   }

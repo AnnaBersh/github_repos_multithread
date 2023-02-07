@@ -1,18 +1,21 @@
-
 import 'package:flutter/material.dart';
 import 'package:github_repos_multithread/constants/palette.dart';
 import 'package:github_repos_multithread/constants/styles.dart';
 
 ThemeData buildTheme() {
   return ThemeData(
-    scaffoldBackgroundColor: Palette.background,
-    primarySwatch: _createMaterialColor(Palette.white),
-    visualDensity: VisualDensity.adaptivePlatformDensity,
-    fontFamily: fontFamily,
-        textSelectionTheme: const TextSelectionThemeData(
-      cursorColor: Palette.mainGreen,
-    ),
-  );
+      scaffoldBackgroundColor: Palette.background,
+      primarySwatch: _createMaterialColor(Palette.white),
+      visualDensity: VisualDensity.adaptivePlatformDensity,
+      fontFamily: fontFamily,
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: Palette.mainGreen,
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Palette.mainGreen,
+        linearMinHeight: 7.0,
+      ),
+      appBarTheme: const AppBarTheme(backgroundColor: Palette.white));
 }
 
 MaterialColor _createMaterialColor(Color color) {

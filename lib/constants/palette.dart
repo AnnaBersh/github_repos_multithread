@@ -9,13 +9,9 @@ import 'package:flutter/material.dart';
 class Palette {
   Palette._();
 
-  static const Color black = Colors.black;
-  static const Color textGray80 = Color(0xcc404040);
-  static const Color white = Colors.white;
-  static const Color transparent = Colors.transparent;
   static const Color background = Color(0xffE6E6E6);
+  static const Color textGray80 = Color(0xcc404040);
+  static const Color white = Color(0xf2ffffff);
   static const Color mainGreen = Color(0xff3AA7A4);
-  static const Color greenBlue = Color(0x8059F3EF);
-  static const Color lightBlue = Color(0xff4594FA);
   static const Color accentPink15 = Color(0x26FF4387);
 }
