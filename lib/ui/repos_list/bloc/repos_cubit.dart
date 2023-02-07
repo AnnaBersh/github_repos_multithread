@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:async/async.dart';
 import 'package:either_dart/either.dart';
 import 'package:flutter/foundation.dart';
@@ -23,17 +21,12 @@ class ReposCubit extends Cubit<ReposState> {
       _isLoading = true;
 
       if (searchQuery != state.searchQuery) {
-        log("New search. Invalidating results");
         emit(ReposLoadingState(searchQuery: searchQuery));
       }
-      log("----------------------");
-      log("Loading iteration started");
 
       await _loadData(searchQuery: state.searchQuery, currentPage: state.pageNumber);
 
       _isLoading = false;
-      log("Loading iteration done");
-      log("----------------------");
     }
   }
 
@@ -50,18 +43,13 @@ class ReposCubit extends Cubit<ReposState> {
   }
 
   void _handleSearchResultFromThread(Either<String, SearchResult> result) {
-    log("Handling response");
     result.fold((String error) {
       emit(ReposErrorState(
           errorMessage: error, searchQuery: state.searchQuery, repos: state.repos, favoriteRepos: state.favoriteRepos));
     }, (SearchResult result) {
-      log("Handling success for page ${result.pageNumber}");
-
       List<GitHubRepo> newRepos = [];
       newRepos.addAll(state.repos);
       newRepos.addAll(result.repos);
-
-      log("New repos length: ${newRepos.length}");
 
       emit(ReposSuccessState(
           searchQuery: state.searchQuery,
@@ -69,8 +57,6 @@ class ReposCubit extends Cubit<ReposState> {
           pageNumber: state.pageNumber + 1,
           totalCount: result.totalCount,
           favoriteRepos: _reposRepository.getFavorites()));
-
-      log("New state page: ${state.pageNumber}");
     });
   }
 

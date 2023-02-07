@@ -1,6 +1,6 @@
-
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
+import 'package:github_repos_multithread/constants/strings.dart';
 import 'package:github_repos_multithread/data/repos_repository.dart';
 import 'package:github_repos_multithread/main.dart';
 import 'package:mockito/annotations.dart';
@@ -15,16 +15,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyApp());
 
-    expect(find.text('Search query'), findsOneWidget);
-    expect(find.text('Search'), findsOneWidget);
-    // expect(find.text('1'), findsNothing);
-    //
-    // // Tap the '+' icon and trigger a frame.
-    // await tester.tap(find.byIcon(Icons.add));
-    // await tester.pump();
-    //
-    // // Verify that our counter has incremented.
-    // expect(find.text('0'), findsNothing);
-    // expect(find.text('1'), findsOneWidget);
+    expect(find.text(Strings.searchQuery), findsOneWidget);
+    expect(find.text(Strings.search), findsOneWidget);
   });
 }

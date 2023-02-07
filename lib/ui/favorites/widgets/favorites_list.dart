@@ -24,12 +24,10 @@ class FavoritesList extends StatelessWidget {
                   child: Text(repo.name, style: Styles.s16TextGrayW700),
                 ),
                 subtitle: Text(repo.htmlUrl, style: Styles.s14TextGrayW500Ital),
-                trailing: const IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.delete,
-                      color: Palette.mainGreen,
-                    )),
+                trailing: const Icon(
+                  Icons.delete,
+                  color: Palette.mainGreen,
+                ),
                 onTap: () {
                   context.read<FavoritesCubit>().removeFromFavorites(repo);
                 },

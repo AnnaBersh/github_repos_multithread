@@ -61,8 +61,33 @@ void main() {
             ],
         verify: (_) {
           verify(mockReposRepository.getFavorites()).called(2);
-          //TODO this does not work
-          // verify(mockReposRepository.getReposList(searchQuery: searchQuery, page: 1)).called(2);
+        });
+
+    blocTest<ReposCubit, ReposState>(
+        'emits [ReposLoadingState, ReposSuccessState, ReposSuccessState, ReposSuccessState, ReposSuccessState] when search is called twice',
+        setUp: () {
+          when(response1.reposList).thenReturn(reposList);
+          when(response1.isSuccess).thenReturn(true);
+          when(response1.totalCount).thenReturn(1);
+          when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
+              .thenAnswer((_) => Future.value(response1));
+        },
+        build: () => ReposCubit(),
+        act: (cubit) async {
+          await cubit.search(searchQuery);
+          await cubit.search(searchQuery);
+        },
+        expect: () => [
+              isA<ReposLoadingState>(),
+              isA<ReposSuccessState>()
+                  .having((ReposSuccessState state) => state.repos, 'repos', reposList)
+                  .having((ReposSuccessState state) => state.searchQuery, 'searchQuery', searchQuery),
+              isA<ReposSuccessState>(),
+              isA<ReposSuccessState>(),
+              isA<ReposSuccessState>()
+            ],
+        verify: (_) {
+          verify(mockReposRepository.getFavorites()).called(4);
         });
 
     blocTest<ReposCubit, ReposState>('emits [ReposSuccessState, ReposSuccessState] when loadmore is called',

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_repos_multithread/constants/palette.dart';
@@ -26,7 +24,6 @@ class ListViewWithSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    log("Drawing list with ${repos.length} elements");
     List<Widget> widgets = [
       SearchForm(
         searchQuery: searchQuery,
