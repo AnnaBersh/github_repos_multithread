@@ -89,12 +89,10 @@ class ReposCubit extends Cubit<ReposState> {
 
 /// This should be called from separate isolate
 Future<Either<String, SearchResult>> getReposPage(SearchCommand searchCommand) async {
-  ReposListResponse response = await searchCommand.reposRepository
+  Either<String, ReposListResponse> response = await searchCommand.reposRepository
       .getReposList(searchQuery: searchCommand.searchQuery, page: searchCommand.pageNumber);
-  if (response.isSuccess) {
-    return Right(SearchResult(
-        repos: response.reposList ?? [], pageNumber: searchCommand.pageNumber, totalCount: response.totalCount));
-  } else {
-    return Left(response.error ?? 'Unknown error');
-  }
+  return response.either(
+      (String errorText) => errorText,
+      (ReposListResponse response) => SearchResult(
+          repos: response.reposList, pageNumber: searchCommand.pageNumber, totalCount: response.totalCount));
 }

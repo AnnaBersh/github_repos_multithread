@@ -28,14 +28,14 @@ void main() {
 
   test('ReposListResponse parses reposList correctly', () {
     ReposListResponse reposListResponse =
-        ReposListResponse(isSuccess: true, totalCount: 2, reposListJson: [repoData1, repoData2]);
-    expect(reposListResponse.reposList?.length, 2);
-    expect(reposListResponse.reposList?[0].id, repoData1['id']);
-    expect(reposListResponse.reposList?[0].name, repoData1['name']);
-    expect(reposListResponse.reposList?[0].owner, isNot(null));
+        ReposListResponse(totalCount: 2, reposListJson: [repoData1, repoData2]);
+    expect(reposListResponse.reposList.length, 2);
+    expect(reposListResponse.reposList[0].id, repoData1['id']);
+    expect(reposListResponse.reposList[0].name, repoData1['name']);
+    expect(reposListResponse.reposList[0].owner, isNot(null));
 
-    expect(reposListResponse.reposList?[1].id, repoData2['id']);
-    expect(reposListResponse.reposList?[1].name, repoData2['name']);
-    expect(reposListResponse.reposList?[1].owner, isNot(null));
+    expect(reposListResponse.reposList[1].id, repoData2['id']);
+    expect(reposListResponse.reposList[1].name, repoData2['name']);
+    expect(reposListResponse.reposList[1].owner, isNot(null));
   });
 }

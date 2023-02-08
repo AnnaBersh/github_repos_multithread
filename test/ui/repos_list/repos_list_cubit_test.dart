@@ -1,4 +1,5 @@
 import 'package:bloc_test/bloc_test.dart';
+import 'package:either_dart/either.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:github_repos_multithread/data/repos_repository.dart';
@@ -45,10 +46,9 @@ void main() {
         'emits [ReposLoadingState, ReposSuccessState, ReposSuccessState] when search is called',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
-          when(response1.isSuccess).thenReturn(true);
           when(response1.totalCount).thenReturn(1);
           when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
-              .thenAnswer((_) => Future.value(response1));
+              .thenAnswer((_) => Future.value(Right(response1)));
         },
         build: () => ReposCubit(),
         act: (cubit) async => await cubit.search(searchQuery),
@@ -67,10 +67,9 @@ void main() {
         'emits [ReposLoadingState, ReposSuccessState, ReposSuccessState, ReposSuccessState, ReposSuccessState] when search is called twice',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
-          when(response1.isSuccess).thenReturn(true);
           when(response1.totalCount).thenReturn(1);
           when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
-              .thenAnswer((_) => Future.value(response1));
+              .thenAnswer((_) => Future.value(Right(response1)));
         },
         build: () => ReposCubit(),
         act: (cubit) async {
@@ -93,10 +92,9 @@ void main() {
     blocTest<ReposCubit, ReposState>('emits [ReposSuccessState, ReposSuccessState] when loadmore is called',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
-          when(response1.isSuccess).thenReturn(true);
           when(response1.totalCount).thenReturn(1);
           when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
-              .thenAnswer((_) => Future.value(response1));
+              .thenAnswer((_) => Future.value(Right(response1)));
         },
         seed: () =>
             ReposSuccessState(searchQuery: searchQuery, repos: [], favoriteRepos: [], pageNumber: 1, totalCount: 1),
@@ -114,10 +112,10 @@ void main() {
 
     blocTest<ReposCubit, ReposState>('emits [ReposLoadingState, ReposErrorState, ReposErrorState] when search fails',
         setUp: () {
-          when(response1.isSuccess).thenReturn(false);
-          when(response1.error).thenReturn(error);
+          // when(response1.isSuccess).thenReturn(false);
+          // when(response1.error).thenReturn(error);
           when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
-              .thenAnswer((_) => Future.value(response1));
+              .thenAnswer((_) => Future.value(const Left(error)));
         },
         build: () => ReposCubit(),
         act: (cubit) async => await cubit.search(searchQuery),

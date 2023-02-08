@@ -1,3 +1,4 @@
+import 'package:either_dart/either.dart';
 import 'package:get_it/get_it.dart';
 import 'package:github_repos_multithread/model/api/repos_list_response.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
@@ -32,7 +33,7 @@ class ReposRepository {
     return Hive.box<GitHubRepo>(likedReposBox).containsKey(repo.id);
   }
 
-  Future<ReposListResponse> getReposList({String searchQuery = "", int page = 1}) {
+  Future<Either<String, ReposListResponse>> getReposList({String searchQuery = "", int page = 1}) {
     return _githubApi.getReposList(searchQuery: searchQuery, page: page);
   }
 }

@@ -5,9 +5,10 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i5;
 
+import 'package:either_dart/either.dart' as _i2;
 import 'package:github_repos_multithread/data/repos_repository.dart' as _i3;
 import 'package:github_repos_multithread/model/api/repos_list_response.dart'
-    as _i2;
+    as _i6;
 import 'package:github_repos_multithread/model/github_repo.dart' as _i4;
 import 'package:mockito/mockito.dart' as _i1;
 
@@ -22,9 +23,8 @@ import 'package:mockito/mockito.dart' as _i1;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeReposListResponse_0 extends _i1.SmartFake
-    implements _i2.ReposListResponse {
-  _FakeReposListResponse_0(
+class _FakeEither_0<L, R> extends _i1.SmartFake implements _i2.Either<L, R> {
+  _FakeEither_0(
     Object parent,
     Invocation parentInvocation,
   ) : super(
@@ -64,7 +64,7 @@ class MockReposRepository extends _i1.Mock implements _i3.ReposRepository {
         returnValueForMissingStub: false,
       ) as bool);
   @override
-  _i5.Future<_i2.ReposListResponse> getReposList({
+  _i5.Future<_i2.Either<String, _i6.ReposListResponse>> getReposList({
     String? searchQuery = r'',
     int? page = 1,
   }) =>
@@ -78,7 +78,8 @@ class MockReposRepository extends _i1.Mock implements _i3.ReposRepository {
           },
         ),
         returnValue:
-            _i5.Future<_i2.ReposListResponse>.value(_FakeReposListResponse_0(
+            _i5.Future<_i2.Either<String, _i6.ReposListResponse>>.value(
+                _FakeEither_0<String, _i6.ReposListResponse>(
           this,
           Invocation.method(
             #getReposList,
@@ -90,7 +91,8 @@ class MockReposRepository extends _i1.Mock implements _i3.ReposRepository {
           ),
         )),
         returnValueForMissingStub:
-            _i5.Future<_i2.ReposListResponse>.value(_FakeReposListResponse_0(
+            _i5.Future<_i2.Either<String, _i6.ReposListResponse>>.value(
+                _FakeEither_0<String, _i6.ReposListResponse>(
           this,
           Invocation.method(
             #getReposList,
@@ -101,23 +103,23 @@ class MockReposRepository extends _i1.Mock implements _i3.ReposRepository {
             },
           ),
         )),
-      ) as _i5.Future<_i2.ReposListResponse>);
+      ) as _i5.Future<_i2.Either<String, _i6.ReposListResponse>>);
 }
 
 /// A class which mocks [ReposListResponse].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockReposListResponse extends _i1.Mock implements _i2.ReposListResponse {
+class MockReposListResponse extends _i1.Mock implements _i6.ReposListResponse {
+  @override
+  List<_i4.GitHubRepo> get reposList => (super.noSuchMethod(
+        Invocation.getter(#reposList),
+        returnValue: <_i4.GitHubRepo>[],
+        returnValueForMissingStub: <_i4.GitHubRepo>[],
+      ) as List<_i4.GitHubRepo>);
   @override
   int get totalCount => (super.noSuchMethod(
         Invocation.getter(#totalCount),
         returnValue: 0,
         returnValueForMissingStub: 0,
       ) as int);
-  @override
-  bool get isSuccess => (super.noSuchMethod(
-        Invocation.getter(#isSuccess),
-        returnValue: false,
-        returnValueForMissingStub: false,
-      ) as bool);
 }

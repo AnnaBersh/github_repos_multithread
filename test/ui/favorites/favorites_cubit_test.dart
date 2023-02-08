@@ -9,7 +9,7 @@ import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
 @GenerateNiceMocks([MockSpec<ReposRepository>()])
-import 'favorites_bloc_test.mocks.dart';
+import 'favorites_cubit_test.mocks.dart';
 
 void main() {
   MockReposRepository mockReposRepository = MockReposRepository();
