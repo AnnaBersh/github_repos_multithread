@@ -1,40 +1,19 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:hive/hive.dart';
 
+part 'github_repo_owner.freezed.dart';
 part 'github_repo_owner.g.dart';
 
-@HiveType(typeId: 1)
-class Owner {
-  @HiveField(0)
-  final int id;
-  @HiveField(1)
-  final String login;
-  @HiveField(2)
-  final String? avatarUrl;
-  @HiveField(3)
-  final String? gravatarId;
-  @HiveField(4)
-  final String url;
+@freezed
+class Owner with _$Owner {
+  @HiveType(typeId: 1)
+  const factory Owner(
+      {@JsonKey(name: 'id', required: true, disallowNullValue: true) @HiveField(0) required final int id,
+      @HiveField(1) @Default('') final String login,
+      @HiveField(2) final String? avatarUrl,
+      @HiveField(3) final String? gravatarId,
+      @HiveField(4) @Default('') final String url,
+      @HiveField(5) final String? description}) = _Owner;
 
-  Owner({
-    required this.login,
-    required this.id,
-    required this.avatarUrl,
-    required this.gravatarId,
-    required this.url,
-  });
-
-  Owner.fromJson(Map<String, dynamic> json)
-      : login = json['login'],
-        id = json['id'],
-        avatarUrl = json['avatar_url'],
-        gravatarId = json['gravatar_id'],
-        url = json['url'];
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Owner && runtimeType == other.runtimeType && id == other.id && login == other.login;
-
-  @override
-  int get hashCode => id.hashCode ^ login.hashCode;
+  factory Owner.fromJson(Map<String, dynamic> json) => _$OwnerFromJson(json);
 }
