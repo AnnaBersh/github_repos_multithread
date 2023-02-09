@@ -47,5 +47,5 @@ jobs:
           cache: true
       - name: Get dependencies
         run: flutter pub get
-      - name: Build apk
+      - name: Run all tests
         run: flutter test
