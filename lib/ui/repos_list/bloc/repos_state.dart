@@ -1,51 +1,43 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
 
-abstract class ReposState {
-  // as we always increase pageNumber before making request
-  // and min page for github is 1 it has to start from 0 here. See constructor
-  final int pageNumber;
-  final String searchQuery;
-  final int totalCount;
-  final List<GitHubRepo> repos;
-  final List<GitHubRepo> favoriteRepos;
+part 'repos_state.freezed.dart';
 
-  ReposState(
-      {this.searchQuery = '',
-      this.pageNumber = 0,
-      this.repos = const [],
-      this.favoriteRepos = const [],
-      this.totalCount = 0});
-}
+@freezed
+class ReposState with _$ReposState {
+  const factory ReposState.initial(
+      {@Default('') String searchQuery,
+      @Default([]) List<GitHubRepo> repos,
+      @Default([]) List<GitHubRepo> favoriteRepos,
+      @Default(0) int pageNumber,
+      @Default(0) int totalCount}) = ReposStateInitial;
 
-class ReposInitialState extends ReposState {
-  ReposInitialState({super.searchQuery});
-}
+  const factory ReposState.success(
+      {required String searchQuery,
+      required List<GitHubRepo> repos,
+      required List<GitHubRepo> favoriteRepos,
+      required int pageNumber,
+      required int totalCount}) = ReposStateSuccess;
 
-class ReposSuccessState extends ReposState {
-  ReposSuccessState(
-      {required super.searchQuery,
-      required super.repos,
-      required super.favoriteRepos,
-      required super.pageNumber,
-      required super.totalCount});
-}
+  const factory ReposState.loading(
+      {@Default('') String searchQuery,
+      @Default([]) List<GitHubRepo> repos,
+      @Default([]) List<GitHubRepo> favoriteRepos,
+      @Default(0) int pageNumber,
+      @Default(0) int totalCount}) = ReposStateLoading;
 
-class ReposLoadingState extends ReposState {
-  ReposLoadingState({super.searchQuery});
-}
+  const factory ReposState.error(
+      {required String errorMessage,
+      @Default('') String searchQuery,
+      @Default([]) List<GitHubRepo> repos,
+      @Default([]) List<GitHubRepo> favoriteRepos,
+      @Default(0) int pageNumber,
+      @Default(0) int totalCount}) = ReposStateError;
 
-class ReposErrorState extends ReposState {
-  final String errorMessage;
-
-  ReposErrorState(
-      {required this.errorMessage,
-      super.searchQuery,
-      super.repos,
-      super.favoriteRepos,
-      super.pageNumber,
-      super.totalCount});
-}
-
-class GoToFavoritesState extends ReposState {
-  GoToFavoritesState({super.searchQuery, super.repos, super.favoriteRepos, super.pageNumber, super.totalCount});
+  const factory ReposState.goToFavorites(
+      {@Default('') String searchQuery,
+      @Default([]) List<GitHubRepo> repos,
+      @Default([]) List<GitHubRepo> favoriteRepos,
+      @Default(0) int pageNumber,
+      @Default(0) int totalCount}) = ReposStateGoToFavorites;
 }

@@ -27,37 +27,36 @@ class ReposListView extends StatelessWidget {
           child: Center(
             child: BlocConsumer<ReposCubit, ReposState>(
               listener: (context, state) {
-                switch (state.runtimeType) {
-                  case ReposErrorState:
-                    Fluttertoast.showToast(
-                      msg: (state as ReposErrorState).errorMessage,
-                      toastLength: Toast.LENGTH_LONG,
-                      fontSize: 16.0,
-                      backgroundColor: Palette.white,
-                      textColor: Palette.mainGreen,
-                    );
-                    break;
-                  case GoToFavoritesState:
-                    Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (context) => const FavoritesListScreen()))
-                        .then((value) => context.read<ReposCubit>().updateFavorites());
-                    break;
-                }
+                state.maybeMap(
+                    orElse: () {},
+                    error: (ReposStateError value) {
+                      Fluttertoast.showToast(
+                        msg: value.errorMessage,
+                        toastLength: Toast.LENGTH_LONG,
+                        fontSize: 16.0,
+                        backgroundColor: Palette.white,
+                        textColor: Palette.mainGreen,
+                      );
+                    },
+                    goToFavorites: (ReposStateGoToFavorites value) {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (context) => const FavoritesListScreen()))
+                          .then((value) => context.read<ReposCubit>().updateFavorites());
+                    });
               },
               builder: (context, state) {
-                switch (state.runtimeType) {
-                  case ReposLoadingState:
-                    return _buildLoadingState(searchQuery: state.searchQuery);
-                  case ReposSuccessState:
-                    return ListViewWithSearch(
-                      repos: state.repos,
-                      favoriteRepos: state.favoriteRepos,
-                      searchQuery: state.searchQuery,
-                      hasMoreData: state.totalCount > state.repos.length,
-                    );
-                  default:
-                    return SearchForm();
-                }
+                return state.maybeMap(orElse: () {
+                  return SearchForm();
+                }, success: (ReposStateSuccess value) {
+                  return ListViewWithSearch(
+                    repos: value.repos,
+                    favoriteRepos: value.favoriteRepos,
+                    searchQuery: value.searchQuery,
+                    hasMoreData: value.totalCount > value.repos.length,
+                  );
+                }, loading: (ReposStateLoading value) {
+                  return _buildLoadingState(searchQuery: value.searchQuery);
+                });
               },
             ),
           )),

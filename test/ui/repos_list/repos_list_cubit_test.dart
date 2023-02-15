@@ -38,12 +38,12 @@ void main() {
       'ReposInitialState is an initial state',
       build: () => ReposCubit(),
       verify: (ReposCubit cubit) {
-        expect(cubit.state, isA<ReposInitialState>());
+        expect(cubit.state, isA<ReposStateInitial>());
       },
     );
 
     blocTest<ReposCubit, ReposState>(
-        'emits [ReposLoadingState, ReposSuccessState, ReposSuccessState] when search is called',
+        'emits [ReposStateLoading, ReposStateSuccess, ReposStateSuccess] when search is called',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
           when(response1.totalCount).thenReturn(1);
@@ -53,18 +53,18 @@ void main() {
         build: () => ReposCubit(),
         act: (cubit) async => await cubit.search(searchQuery),
         expect: () => [
-              isA<ReposLoadingState>(),
-              isA<ReposSuccessState>()
-                  .having((ReposSuccessState state) => state.repos, 'repos', reposList)
-                  .having((ReposSuccessState state) => state.searchQuery, 'searchQuery', searchQuery),
-              isA<ReposSuccessState>()
+              isA<ReposStateLoading>(),
+              isA<ReposStateSuccess>()
+                  .having((ReposStateSuccess state) => state.repos, 'repos', reposList)
+                  .having((ReposStateSuccess state) => state.searchQuery, 'searchQuery', searchQuery),
+              isA<ReposStateSuccess>()
             ],
         verify: (_) {
           verify(mockReposRepository.getFavorites()).called(2);
         });
 
     blocTest<ReposCubit, ReposState>(
-        'emits [ReposLoadingState, ReposSuccessState, ReposSuccessState, ReposSuccessState, ReposSuccessState] when search is called twice',
+        'emits [ReposStateLoading, ReposStateSuccess, ReposStateSuccess, ReposStateSuccess, ReposStateSuccess] when search is called twice',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
           when(response1.totalCount).thenReturn(1);
@@ -77,19 +77,19 @@ void main() {
           await cubit.search(searchQuery);
         },
         expect: () => [
-              isA<ReposLoadingState>(),
-              isA<ReposSuccessState>()
-                  .having((ReposSuccessState state) => state.repos, 'repos', reposList)
-                  .having((ReposSuccessState state) => state.searchQuery, 'searchQuery', searchQuery),
-              isA<ReposSuccessState>(),
-              isA<ReposSuccessState>(),
-              isA<ReposSuccessState>()
+              isA<ReposStateLoading>(),
+              isA<ReposStateSuccess>()
+                  .having((ReposStateSuccess state) => state.repos, 'repos', reposList)
+                  .having((ReposStateSuccess state) => state.searchQuery, 'searchQuery', searchQuery),
+              isA<ReposStateSuccess>(),
+              isA<ReposStateSuccess>(),
+              isA<ReposStateSuccess>()
             ],
         verify: (_) {
           verify(mockReposRepository.getFavorites()).called(4);
         });
 
-    blocTest<ReposCubit, ReposState>('emits [ReposSuccessState, ReposSuccessState] when loadmore is called',
+    blocTest<ReposCubit, ReposState>('emits [ReposStateSuccess, ReposStateSuccess] when loadmore is called',
         setUp: () {
           when(response1.reposList).thenReturn(reposList);
           when(response1.totalCount).thenReturn(1);
@@ -97,60 +97,57 @@ void main() {
               .thenAnswer((_) => Future.value(Right(response1)));
         },
         seed: () =>
-            ReposSuccessState(searchQuery: searchQuery, repos: [], favoriteRepos: [], pageNumber: 1, totalCount: 1),
+            ReposStateSuccess(searchQuery: searchQuery, repos: [], favoriteRepos: [], pageNumber: 1, totalCount: 1),
         build: () => ReposCubit(),
         act: (cubit) async => await cubit.loadMore(),
         expect: () => [
-              isA<ReposSuccessState>()
-                  .having((ReposSuccessState state) => state.repos, 'repos', reposList)
-                  .having((ReposSuccessState state) => state.searchQuery, 'searchQuery', searchQuery),
-              isA<ReposSuccessState>()
+              isA<ReposStateSuccess>()
+                  .having((ReposStateSuccess state) => state.repos, 'repos', reposList)
+                  .having((ReposStateSuccess state) => state.searchQuery, 'searchQuery', searchQuery),
+              isA<ReposStateSuccess>()
             ],
         verify: (_) {
           verify(mockReposRepository.getFavorites()).called(2);
         });
 
-    blocTest<ReposCubit, ReposState>('emits [ReposLoadingState, ReposErrorState, ReposErrorState] when search fails',
+    blocTest<ReposCubit, ReposState>('emits [ReposStateLoading, ReposStateError, ReposStateError] when search fails',
         setUp: () {
-          // when(response1.isSuccess).thenReturn(false);
-          // when(response1.error).thenReturn(error);
           when(mockReposRepository.getReposList(searchQuery: anyNamed('searchQuery'), page: anyNamed('page')))
               .thenAnswer((_) => Future.value(const Left(error)));
         },
         build: () => ReposCubit(),
         act: (cubit) async => await cubit.search(searchQuery),
         expect: () => [
-              isA<ReposLoadingState>(),
-              isA<ReposErrorState>()
-                  .having((ReposErrorState state) => state.errorMessage, 'errorMessage', error)
-                  .having((ReposErrorState state) => state.searchQuery, 'searchQuery', searchQuery),
-              isA<ReposErrorState>()
+              isA<ReposStateLoading>(),
+              isA<ReposStateError>()
+                  .having((ReposStateError state) => state.errorMessage, 'errorMessage', error)
+                  .having((ReposStateError state) => state.searchQuery, 'searchQuery', searchQuery)
             ]);
 
-    blocTest<ReposCubit, ReposState>('emits [ReposSuccessState] when updateFavorites is called',
+    blocTest<ReposCubit, ReposState>('emits [ReposStateSuccess] when updateFavorites is called',
         setUp: () {
           when(mockReposRepository.getFavorites()).thenReturn(reposList);
         },
         build: () => ReposCubit(),
         act: (cubit) => cubit.updateFavorites(),
         expect: () => [
-              isA<ReposSuccessState>()
-                  .having((ReposSuccessState state) => state.favoriteRepos, 'favoriteRepos', reposList),
+              isA<ReposStateSuccess>()
+                  .having((ReposStateSuccess state) => state.favoriteRepos, 'favoriteRepos', reposList),
             ],
         verify: (_) {
           verify(mockReposRepository.getFavorites());
           verifyNoMoreInteractions(mockReposRepository);
         });
 
-    blocTest<ReposCubit, ReposState>('emits [ReposSuccessState] when toggleFavorites is called',
+    blocTest<ReposCubit, ReposState>('emits [ReposStateSuccess] when toggleFavorites is called',
         setUp: () {
           when(mockReposRepository.getFavorites()).thenReturn(reposList);
         },
         build: () => ReposCubit(),
         act: (cubit) => cubit.toggleFavorites(repo),
         expect: () => [
-              isA<ReposSuccessState>()
-                  .having((ReposSuccessState state) => state.favoriteRepos, 'favoriteRepos', reposList),
+              isA<ReposStateSuccess>()
+                  .having((ReposStateSuccess state) => state.favoriteRepos, 'favoriteRepos', reposList),
             ],
         verify: (_) {
           verify(mockReposRepository.toggleFavorites(repo));
@@ -161,7 +158,7 @@ void main() {
     blocTest<ReposCubit, ReposState>('emits [GoToFavoritesState] when goToFavorites is called',
         build: () => ReposCubit(),
         act: (cubit) => cubit.goToFavorites(),
-        expect: () => [isA<GoToFavoritesState>()],
+        expect: () => [isA<ReposStateGoToFavorites>()],
         verify: (_) {
           verifyNoMoreInteractions(mockReposRepository);
         });

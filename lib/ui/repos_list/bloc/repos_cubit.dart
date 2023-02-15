@@ -14,14 +14,14 @@ class ReposCubit extends Cubit<ReposState> {
   bool _isLoading = false;
   final ReposRepository _reposRepository = GetIt.instance.get<ReposRepository>();
 
-  ReposCubit() : super(ReposInitialState());
+  ReposCubit() : super(const ReposState.initial());
 
   Future<void> search(String searchQuery) async {
     if (!_isLoading) {
       _isLoading = true;
 
       if (searchQuery != state.searchQuery) {
-        emit(ReposLoadingState(searchQuery: searchQuery));
+        emit(ReposState.loading(searchQuery: searchQuery));
       }
 
       await _loadData(searchQuery: state.searchQuery, currentPage: state.pageNumber);
@@ -44,14 +44,14 @@ class ReposCubit extends Cubit<ReposState> {
 
   void _handleSearchResultFromThread(Either<String, SearchResult> result) {
     result.fold((String error) {
-      emit(ReposErrorState(
+      emit(ReposState.error(
           errorMessage: error, searchQuery: state.searchQuery, repos: state.repos, favoriteRepos: state.favoriteRepos));
     }, (SearchResult result) {
       List<GitHubRepo> newRepos = [];
       newRepos.addAll(state.repos);
       newRepos.addAll(result.repos);
 
-      emit(ReposSuccessState(
+      emit(ReposState.success(
           searchQuery: state.searchQuery,
           repos: newRepos,
           pageNumber: state.pageNumber + 1,
@@ -65,7 +65,7 @@ class ReposCubit extends Cubit<ReposState> {
   }
 
   void updateFavorites() {
-    emit(ReposSuccessState(
+    emit(ReposState.success(
         searchQuery: state.searchQuery,
         repos: state.repos,
         pageNumber: state.pageNumber + 1,
@@ -79,7 +79,7 @@ class ReposCubit extends Cubit<ReposState> {
   }
 
   void goToFavorites() {
-    emit(GoToFavoritesState(
+    emit(ReposState.goToFavorites(
         searchQuery: state.searchQuery,
         repos: state.repos,
         pageNumber: state.pageNumber,
