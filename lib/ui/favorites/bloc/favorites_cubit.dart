@@ -7,15 +7,15 @@ import 'package:github_repos_multithread/ui/favorites/bloc/favorites_state.dart'
 class FavoritesCubit extends Cubit<FavoritesState> {
   final ReposRepository _reposRepository = GetIt.instance.get<ReposRepository>();
 
-  FavoritesCubit() : super(LoadingFavoritesState());
+  FavoritesCubit() : super(const FavoritesState.loading());
 
   void loadData() {
-    emit(LoadingFavoritesState());
-    emit(LoadedFavoritesState(repos: _reposRepository.getFavorites()));
+    emit(const FavoritesState.loading());
+    emit(FavoritesState.loaded(repos: _reposRepository.getFavorites()));
   }
 
   void removeFromFavorites(GitHubRepo repo) {
     _reposRepository.toggleFavorites(repo);
-    emit(LoadedFavoritesState(repos: _reposRepository.getFavorites()));
+    emit(FavoritesState.loaded(repos: _reposRepository.getFavorites()));
   }
 }

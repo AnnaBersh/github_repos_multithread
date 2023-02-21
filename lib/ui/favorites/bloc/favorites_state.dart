@@ -1,13 +1,11 @@
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:github_repos_multithread/model/github_repo.dart';
 
-abstract class FavoritesState {
-  final List<GitHubRepo> repos;
+part 'favorites_state.freezed.dart';
 
-  FavoritesState({this.repos = const []});
-}
+@freezed
+class FavoritesState with _$FavoritesState {
+  const factory FavoritesState.loading() = LoadingFavoritesState;
 
-class LoadingFavoritesState extends FavoritesState {}
-
-class LoadedFavoritesState extends FavoritesState {
-  LoadedFavoritesState({required super.repos});
+  const factory FavoritesState.loaded({required List<GitHubRepo> repos}) = LoadedFavoritesState;
 }

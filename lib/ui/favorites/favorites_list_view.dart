@@ -19,28 +19,28 @@ class FavoritesListView extends StatelessWidget {
         style: Styles.s18MainGreenW800,
       )),
       body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: BlocBuilder<FavoritesCubit, FavoritesState>(
-              builder: (context, state) {
-                switch (state.runtimeType) {
-                  case LoadingFavoritesState:
-                    return _buildLoadingState();
-                  case LoadedFavoritesState:
-                    return FavoritesList(
-                      repos: state.repos,
-                    );
-                  default:
-                    return _buildLoadingState();
-                }
+        padding: const EdgeInsets.all(10.0),
+        child: Center(
+          child: BlocBuilder<FavoritesCubit, FavoritesState>(builder: (context, state) {
+            return state.map(
+              loaded: (LoadedFavoritesState value) {
+                return FavoritesList(
+                  repos: value.repos,
+                );
               },
-            ),
-          )),
+              loading: (LoadingFavoritesState value) {
+                return _buildLoadingState();
+              },
+            );
+          }),
+        ),
+      ),
     );
   }
 
   Widget _buildLoadingState() {
-    return const Center(child: CircularProgressIndicator(
+    return const Center(
+        child: CircularProgressIndicator(
       backgroundColor: Palette.accentPink15,
     ));
   }
